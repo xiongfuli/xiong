@@ -1,0 +1,205 @@
+#include <stdio.h>
+#include <malloc.h>
+#define len sizeof(struct txl)
+struct txl
+{int  num;
+ char name[10];
+ char sex;
+ char adress[10];
+ long number;
+ struct txl *next;
+};
+int n=0;
+struct txl *head;
+void menu()
+{
+    printf("**********TongXunLu************\n");
+    printf("1.creat a new contact.\n");
+    printf("2.inquire a contact.\n");
+    printf("3.revise acontact.\n");
+    printf("4.delete all contacts.\n");
+    printf("5.show all contact.\n");
+    printf("6.exit TXL.\n");
+    printf("************END****************\n");
+}
+struct txl * add()
+{
+    n=n+1;
+    struct txl *p,*p1;
+    p=(struct txl *)malloc(len);
+    printf("enter contacts.\n");
+    printf("please enter name.\n");
+    scanf("%s",&p->name);
+    getchar();
+    printf("please enter sex.\n");
+    scanf("%c",&p->sex);
+    getchar();
+    printf("please enter adress.\n");
+    scanf("%s",&p->adress);
+    getchar();
+    printf("please enter number.\n");
+    scanf("%ld",&p->number);
+    p->num=n;
+    if(p->num==1)
+    {
+        head=p;
+        p->next=NULL;
+    }
+    else
+    {
+        p1=head;
+        while(p1->next!=NULL)
+        {
+            p1=p1->next;
+        }
+        p1->next=p;
+        p->next=NULL;
+    }
+
+    return head;
+}
+void show()
+{
+    int m=1;
+    struct txl *p1;
+    p1=head;
+    if(head==NULL)
+    printf("you don not have any contacts.\n");
+    else
+    {
+            printf("NUM-----name--------sex-----adress-----number.\n");
+	    for(m=1;m<=n;m++)
+	    {
+	    
+            printf(" %d       %s           %c       %s          %ld\n",m,p1->name,p1->sex,p1->adress,p1->number);
+               
+                p1=p1->next;
+            
+	    }
+    }
+}  
+
+void revise()
+{
+    int m;
+    struct txl *p1,*p2;
+    p1=head;
+    printf("please enter the number of do you want to revise.\n");
+    scanf ("%d",&m);
+    while(p1->num!=m)
+    {
+        p1=p1->next;
+    }
+    printf("please enter name.\n");
+    scanf("%s",&p1->name);
+    getchar();
+    printf("\n");
+    printf("please enter sex.\n");
+    scanf("%c",&p1->sex);
+    getchar();
+    printf("\n");
+    printf("please enter adress.\n");
+    scanf("%s",&p1->adress);
+    getchar();
+    printf("\n");
+    printf("please enter number.\n");
+    scanf("%ld",&p1->number);
+    printf("\n");
+}
+void inquire()
+{
+    int m;
+    struct txl *p1,*p2;
+    p1=head;
+    printf("please enter the number of do you want to know.\n");
+    scanf("%d",&m);
+    while(p1->num!=m)
+    {
+       p1=p1->next;
+    }
+    printf("NUM---name------sex---adress---number.\n");
+    printf("%d    %s        %c    %s       %ld\n",p1->num,p1->name,p1->sex,p1->adress,p1->number);
+}
+struct txl * delete()
+{
+    int m;
+    struct txl *p1,*p2;
+    p1=head;
+    if(head==NULL)
+    {
+        printf("\nyou do not have any contacts to delete.\n");
+        return head;
+    }
+    printf("please enter the number of you want to delete.\n");
+    scanf("%d",&m);
+    if(m>n)
+    {
+        printf("this contact is not exist,please enter again.\n");
+        delete();
+    }
+    else if((m==1)&&(n==1))
+    {
+        free(head);
+        n=n-1;
+        head=NULL;
+    }
+    else if((m==n)&&(n>1))
+    {
+        while(p1->next!=NULL)
+        {
+            p1=p1->next;
+        }
+        free(p1);
+        n=n-1;
+        p1=NULL;
+    }
+    else if((m==1)&&(n>1))
+    {
+        head=p1->next;
+        free(p1);
+        n=n-1;
+    }
+    else
+    {
+        while(p1->next!=NULL)
+        {
+            p2=p1;
+            p1=p1->next;
+        }
+        p2->next=p1->next;
+        free(p1);
+        n=n-1;
+    }
+    return head; 
+}
+   
+    
+int main()
+{
+    int x,y;
+    head=NULL;
+    menu();
+    printf("please choose.\n");
+    while(x!=6)
+    {
+        scanf("%d",&x);
+        switch(x)
+
+            {
+                case 1: add();break;
+                case 2: inquire();break;
+                case 3: revise();break;
+                case 4: delete();break;
+                case 5: show();break;
+		case 6: printf("END\n");break;
+                default:printf("error input.\n");break;
+            }
+	printf ("enter '1'or '0' to xunze shifou jixu.\n");
+        scanf("%d",&y);
+	if(y==1)
+	x=1;
+	else
+	x=6;
+    }
+    return 0;
+}
